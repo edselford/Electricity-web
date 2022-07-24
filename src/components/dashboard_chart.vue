@@ -21,7 +21,7 @@ export default defineComponent({
           },
           {
             axisID: "right-axis",
-            name: "Last Size (kwh)",
+            name: "After Charging (kwh)",
             values: labels.data.lastsize,
           },
         ],
@@ -44,6 +44,9 @@ export default defineComponent({
               title: "Charge total",
             },
           ],
+        },
+        lineOptions: {
+          regionFill: 1,
         },
         title: "",
         data: chartdata,

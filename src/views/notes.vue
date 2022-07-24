@@ -20,12 +20,16 @@ export default defineComponent({
       notelist: [],
       mq: useMq(),
       detail_id: -1,
+      show_detail: false,
     };
   },
   methods: {
     setDetail(id: number) {
-      console.log(id);
+      this.show_detail = true;
       this.detail_id = id;
+    },
+    showDetail(show: boolean) {
+      this.show_detail = show;
     },
   },
   async setup(props) {
@@ -57,9 +61,19 @@ export default defineComponent({
       <MqResponsive target="sm-">
         <div
           style="height: 75vh"
-          class="flex max-w-screen-lg mx-auto bg-stone-100 dark:bg-verydarkgray my-5 p-2 rounded-lg drop-shadow-md"
+          class="flex max-w-screen-lg mx-auto bg-slate-50 dark:bg-verydarkgray my-5 p-2 rounded-lg drop-shadow-md"
         >
-          Buat yang di hape coming soon ya!
+          <NoteList
+            v-if="!show_detail"
+            :notelist="notelist"
+            @clicked="setDetail"
+          />
+          <NoteDetail
+            v-else
+            :notelist="notelist"
+            :id="detail_id"
+            @close="showDetail"
+          />
         </div>
       </MqResponsive>
     </div>

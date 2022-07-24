@@ -36,4 +36,15 @@ export default defineComponent({
       <DashboardChart :notelist="notelist" />
     </div>
   </div>
+  <div class="m-auto flex justify-center">
+    <span class="text-slate-400 dark:text-stone-500 font-jetbrainsmono"
+      >Made by
+      <a
+        target="_blank"
+        href="https://github.com/edselford"
+        class="underline underline-offset-2"
+        >Edsel Mustapa</a
+      ></span
+    >
+  </div>
 </template>

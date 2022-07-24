@@ -9,6 +9,7 @@ export default defineComponent({
       require: true,
     },
   },
+  emits: ["close"],
   data(): any {
     return {
       notedata: [],
@@ -18,23 +19,26 @@ export default defineComponent({
     getData() {
       return this.notedata.filter((data: any) => data.id == this.id)[0];
     },
+    closeDetail() {
+      this.$emit("close", false);
+    },
   },
-  created() {
-    if (this.notelist != null) {
-      (async () => {
+  async setup(props) {
+    if (props.notelist != null) {
+      return await (async () => {
         const { ElectricDetail } = await import("../models/detail_models");
 
         let data = await Promise.all(
-          this.notelist!.map(async (note: Notes) => {
+          props.notelist!.map(async (note: Notes) => {
             const dayjs = (await import("dayjs")).default;
             const moment = dayjs(note.time);
             const dateTime = {
               day: moment.format("dddd"),
-              date: moment.format("DD MM YYYY"),
+              date: moment.format("DD MMM YYYY"),
               time: moment.format("HH:mm"),
             };
 
-            const electricDetail = new ElectricDetail(note.id, this.notelist!);
+            const electricDetail = new ElectricDetail(note.id, props.notelist!);
             const detail = {
               kwhPerDay: (await electricDetail.kwhPerDay()).value,
               price: await electricDetail.getPrice(),
@@ -55,7 +59,7 @@ export default defineComponent({
             return { id: note.id, dateTime, detail, dayRange, electric };
           })
         );
-        this.notedata = data;
+        return { notedata: data };
       })();
     }
   },
@@ -66,7 +70,7 @@ export default defineComponent({
   <!-- detail page -->
   <div
     id="detail-page-list"
-    class="md:w-2/3 w-full h-full hidden md:flex md:flex-row md:justify-start rounded-lg md:py-5 pr-2"
+    class="md:w-2/3 w-full h-full flex md:flex-row flex-col justify-start rounded-lg py-5 pr-2"
   >
     <div
       class="w-px h-full bg-stone-200 md:block hidden dark:bg-stone-600"
@@ -97,9 +101,9 @@ export default defineComponent({
       </div>
     </div>
 
-    <!--OnClick -->
     <div
-      class="dark:text-white flex flex-row ml-2 my-3 md:hidden cursor-pointer"
+      class="dark:text-white flex flex-row mb-5 ml-2 cursor-pointer md:hidden"
+      @click="closeDetail"
     >
       <svg
         xmlns="http://www.w3.org/2000/svg"

@@ -12,16 +12,6 @@ import Navbar from "./views/navbar.vue";
       </template>
     </Suspense>
   </div>
-  <div class="block m-auto flex justify-center">
-    <span class="text-slate-700 dark:text-stone-500 font-jetbrainsmono"
-      >Made by
-      <a
-        href="https://github.com/edselford"
-        class="underline underline-offset-2"
-        >Edsel Mustapa</a
-      ></span
-    >
-  </div>
 </template>
 
 <style>
@@ -52,5 +42,10 @@ import Navbar from "./views/navbar.vue";
   width: 5px;
   background-color: gray;
   border-radius: 5px;
+}
+
+::-webkit-scrollbar-track {
+  border-radius: 10px;
+  background-color: rgba(0, 0, 0, 0);
 }
 </style>

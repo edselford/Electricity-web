@@ -25,6 +25,14 @@ export default defineComponent({
     seeDetail(id: number) {
       this.$emit("clicked", id);
     },
+    isTouchDevice() {
+      return (
+        "ontouchstart" in window ||
+        navigator.maxTouchPoints > 0 ||
+        // @ts-ignore
+        navigator.msMaxTouchPoints > 0
+      );
+    },
   },
   async setup(props) {
     if (props.notelist != null) {
@@ -55,7 +63,12 @@ export default defineComponent({
   <!--Notelist-->
   <div
     id="note-list"
-    class="md:w-1/3 w-full h-full pr-4 rounded-lg transition ease-in-out translate-x-0 hover:-translate-x-1 duration-300 overflow-hidden hover:overflow-auto"
+    class="md:w-1/3 w-full h-full pr-4 rounded-lg transition ease-in-out translate-x-0 hover:-translate-x-1 duration-300"
+    :class="{
+      'overflow-hidden': !isTouchDevice(),
+      'hover:overflow-scroll': !isTouchDevice(),
+      'overflow-scroll': isTouchDevice(),
+    }"
   >
     <div v-for="note in notelist">
       <a
